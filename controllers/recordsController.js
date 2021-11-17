@@ -7,13 +7,21 @@ const db = low(adapter);
 
 
 const getRecord = (req, res) => {
-   const dbGet = db.get("records")
+    const dbGet = db.get("records")
     res.send(dbGet)
 }
 
-const postRecord = (req, res) => {
-    db.get("records").push(req.body).write()
-    res.send("working")
+const postRecord = (req, res, next) => {
+    const record = req.body;
+    db.get("records")
+        .push(record)
+        .last()
+        .assign({id: Date.now().toString()})
+        .write();
+
+    res.status(200).send(record);
 }
 
 module.exports = {getRecord, postRecord}
+
+
