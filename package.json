@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/wwww",
+    "watch": "DEBUG=record-shop:* nodemon --inspect ./bin/www --ignore 'data/*'"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -15,5 +16,10 @@
   "description": "Most applications made for the web have to do with some sort of data manipulation. In order to be able to manipulate our data we have to do two things first:",
   "main": "app.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": { "ext": "js", "ignore": ["*.test.ts", "db/*"], "delay": "2" },
+  "scripts": { "start": "nodemon" }
 }

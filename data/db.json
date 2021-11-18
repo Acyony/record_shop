@@ -1,3 +1,114 @@
 {
-  "records": []
+  "records": [
+    {
+      "gender": "male",
+      "name": {
+        "title": "Mr",
+        "first": "Thomas",
+        "last": "Garnier"
+      },
+      "location": {
+        "street": {
+          "number": 6095,
+          "name": "Rue des Cuirassiers"
+        },
+        "city": "Rouen",
+        "state": "Saône-et-Loire",
+        "country": "France",
+        "postcode": 71846,
+        "coordinates": {
+          "latitude": "-2.0891",
+          "longitude": "-66.0097"
+        },
+        "timezone": {
+          "offset": "+5:00",
+          "description": "Ekaterinburg, Islamabad, Karachi, Tashkent"
+        }
+      },
+      "email": "thomas.garnier@example.com",
+      "login": {
+        "uuid": "e5a9bcda-26e8-425b-81c0-88423f505bf2",
+        "username": "silverbird588",
+        "password": "beanie",
+        "salt": "jz5HivRc",
+        "md5": "66c994390a71c918ff6e7c8a2a26425f",
+        "sha1": "0d06bfbf47e20cde1442ac64fa4844f39666f7a0",
+        "sha256": "b5adf2a9b082bfddfbfd2972cdbdf270d2141341a10091c29fdece23d3dac57b"
+      },
+      "dob": {
+        "date": "1972-06-01T14:33:08.500Z",
+        "age": 49
+      },
+      "registered": {
+        "date": "2007-01-20T19:39:32.785Z",
+        "age": 14
+      },
+      "phone": "02-93-03-79-10",
+      "cell": "06-27-68-52-39",
+      "id": "1637240586097",
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/14.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/men/14.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/men/14.jpg"
+      },
+      "nat": "FR"
+    },
+    {
+      "gender": "male",
+      "name": {
+        "title": "Mr",
+        "first": "Thomas",
+        "last": "Garnier"
+      },
+      "email": "thomas.garnier@example.com",
+      "login": {
+        "uuid": "e5a9bcda-26e8-425b-81c0-88423f505bf2",
+        "username": "silverbird588",
+        "password": "beanie",
+        "salt": "jz5HivRc",
+        "md5": "66c994390a71c918ff6e7c8a2a26425f",
+        "sha1": "0d06bfbf47e20cde1442ac64fa4844f39666f7a0",
+        "sha256": "b5adf2a9b082bfddfbfd2972cdbdf270d2141341a10091c29fdece23d3dac57b"
+      },
+      "dob": {
+        "date": "1972-06-01T14:33:08.500Z",
+        "age": 49
+      },
+      "registered": {
+        "date": "2007-01-20T19:39:32.785Z",
+        "age": 14
+      },
+      "phone": "02-93-03-79-10",
+      "cell": "06-27-68-52-39",
+      "id": "1637241091396"
+    },
+    {
+      "gender": "female",
+      "name": {
+        "first": "Alcione",
+        "last": "Ribeiro"
+      },
+      "email": "thomas.garnier@example.com",
+      "login": {
+        "uuid": "e5a9bcda-26e8-425b-81c0-88423f505bf2",
+        "username": "silverbird588",
+        "password": "beanie",
+        "salt": "jz5HivRc",
+        "md5": "66c994390a71c918ff6e7c8a2a26425f",
+        "sha1": "0d06bfbf47e20cde1442ac64fa4844f39666f7a0",
+        "sha256": "b5adf2a9b082bfddfbfd2972cdbdf270d2141341a10091c29fdece23d3dac57b"
+      },
+      "dob": {
+        "date": "1972-06-01T14:33:08.500Z",
+        "age": 34
+      },
+      "registered": {
+        "date": "2007-01-20T19:39:32.785Z",
+        "age": 14
+      },
+      "phone": "02-93-03-79-10",
+      "cell": "06-27-68-52-39",
+      "id": "1637241161137"
+    }
+  ]
 }
