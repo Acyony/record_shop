@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Record = require('../models/Record');
 const OrderModel = require('../models/Orders');
 const OrderUsers = require('../models/User');
+const {validationResult} = require("express-validator");
 
 
 exports.getRecords = async (req, res, next) => {
@@ -54,6 +55,11 @@ exports.getRecordId = async (req, res, next) => {
 //update
 exports.upDateRecord = async (req, res, next) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+
         const {id} = req.params;
         const dt = req.body;
         const record = await RecordModel.findOneAndUpdate({_id: id}, dt);
@@ -68,15 +74,12 @@ exports.upDateRecord = async (req, res, next) => {
 
 // delete using id
 exports.deleteRecord = async (req, res, next) => {
-    // const {id} = req.params;
-    // await RecordModel.get('records')
-    //     .remove({id: id})
-    //     .write()
-    //
-    // const records = RecordModel.get("records")
-    // res.send(records)
-    // console.log(`${id} deleted`)
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+
         const {id} = req.params;
         const record = await RecordModel.deleteOne({_id: id});
         res.status(200).send(record);
@@ -92,6 +95,11 @@ exports.addRecord = async (req, res, next) => {
     const {title, artist, price, genre, country} = req.body;
 
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+
         const record = await RecordModel.create({
             title,
             artist,
