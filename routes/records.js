@@ -1,17 +1,21 @@
-const recordsFunctions = require('../controllers/recordsController')
 const express = require('express');
 const recordsRouter = express.Router();
+const {
+    getRecords,
+    getRecordId,
+    upDateRecord,
+    deleteRecord,
+    addRecord,
+} = require("../controllers/recordsController");
 
-
-recordsRouter.route("/").get(recordsFunctions.getRecords);
-
-recordsRouter.route('/')
-    .post(recordsFunctions.postRecord)
+recordsRouter.route("/").get(getRecords).post(addRecord);
 
 //http://localhost:3000/records/:id
 recordsRouter.route('/:id')
-    .get(recordsFunctions.getRecordId)
-    .put(recordsFunctions.upDateRecord)
-    .delete(recordsFunctions.deleteRecord)
+    .get(getRecordId)
+    .put(upDateRecord)
+    .delete(deleteRecord)
 
 module.exports = recordsRouter;
+
+

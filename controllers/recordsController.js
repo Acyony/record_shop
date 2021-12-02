@@ -1,79 +1,108 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-
-// Setting up low db:
-const adapter = new FileSync('data/db.json');
-const db = low(adapter);
+const RecordModel = require("../models/Record");
 
 
-const getRecords = (req, res) => {
-    const records = db.get("records")
-    res.send(records)
+const mongoose = require('mongoose');
+const Record = require('../models/Record');
+const OrderModel = require('../models/Orders');
+const OrderUsers = require('../models/User');
+
+
+exports.getRecords = async (req, res, next) => {
+    try {
+        const records = await RecordModel.find();
+        res.status(200).send(records);
+    } catch (err) {
+        err.status = 500;
+        next(err);
+    }
 }
-
-const postRecord = async (req, res, next) => {
-    const record = req.body;
-    await db.get("records")
-        .push(record)
-        .last()
-        .assign({id: Date.now().toString()})
-        .write();
-
-    res.status(200).send(record);
-}
+//
+// exports.postRecord = async (req, res, next) => {
+//     const record = req.body;
+//     await RecordModel.get("records")
+//         .push(record)
+//         .last()
+//         .assign({id: Date.now().toString()})
+//         .write();
+//
+//     res.status(200).send(record);
+// }
 
 
 /*task 03*/
 // get by id
-const getRecordId = async (req, res) => {
+exports.getRecordId = async (req, res, next) => {
     const {id} = req.params;
     console.log(id)
     if (Number.isNaN(id)) {
         throw new Error("error: Uh oh, something has gone wrong. Please tweet us @racyony about the issue. Thank you."
-        );
+        )
+    } else {
+        try {
+            const {id} = req.params;
+            const order = await RecordModel.findOne({_id: id});
+            res.status(200).send(order);
+        } catch (err) {
+            console.log(err)
+            err.status = 500;
+            next(err);
+        }
     }
-    const record = await db.get("records").find({id}).value();
-    res.send(record)
 }
 
+
 //update
-const upDateRecord = async (req, res) => {
-    const {id} = req.params;
-    console.log(id)
-
-    let record = await db.get('records').find({id}).value();
-    const firstName = req.body.firstName || record.name.first;
-    const lastName = req.body.lastName || record.name.last;
-    const gender = req.body.gender || record.gender;
-    console.log(req.body.lastName)
-
-    record = await db.get('records').find({id}).assign(
-        {
-            gender: gender,
-            name: {
-                first: firstName,
-                last: lastName
-            }
-        },
-    ).write();
-    // console.log(record)
-    res.send(record)
+exports.upDateRecord = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const dt = req.body;
+        const record = await RecordModel.findOneAndUpdate({_id: id}, dt);
+        // return order;
+        res.status(200).send(record);
+    } catch (err) {
+        err.status = 500;
+        next(err);
+    }
 }
 
 
 // delete using id
-const deleteRecord = async (req, res) => {
-    const {id} = req.params;
-    await db.get('records')
-        .remove({id: id})
-        .write()
+exports.deleteRecord = async (req, res, next) => {
+    // const {id} = req.params;
+    // await RecordModel.get('records')
+    //     .remove({id: id})
+    //     .write()
+    //
+    // const records = RecordModel.get("records")
+    // res.send(records)
+    // console.log(`${id} deleted`)
+    try {
+        const {id} = req.params;
+        const record = await RecordModel.deleteOne({_id: id});
+        res.status(200).send(record);
+    } catch (err) {
+        err.status = 500;
+        next(err);
+    }
 
-    const records = db.get("records")
-    res.send(records)
-    console.log(`${id} deleted`)
 }
 
 
-module.exports = {getRecords, postRecord, getRecordId, deleteRecord, upDateRecord}
+exports.addRecord = async (req, res, next) => {
+    const {title, artist, price, genre, country} = req.body;
 
+    try {
+        const record = await RecordModel.create({
+            title,
+            artist,
+            price,
+            genre,
+            country
+        });
+        await record.save();
+        res.status(200).send(record);
+    } catch (err) {
+        next(err);
+    }
+};
 

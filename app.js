@@ -1,13 +1,16 @@
-// const path = require('path');
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
+require('dotenv').config();
 
+const bcrypt = require('bcrypt');
 
-// Setting up low db:
-const adapter = new FileSync('./data/db.json');
-const db = low(adapter);
-// create a default layout
-db.defaults({records: []}).write();
+// Setting up mongoose to connect with th DB:
+const mongoose = require("mongoose");
+mongoose.connect(process.env.DB_CONNECTION);
+mongoose.connection.on('connected', ()=> {
+    console.log('Connection established! =^.^=');
+});
+
+mongoose.connection.on("error", console.error);
+
 
 
 /** EXTERNAL DEPENDENCIES */
@@ -20,9 +23,9 @@ const logger = require('morgan');
 
 /** ROUTERS */
 const indexRouter = require('./routes/index');
-const {routerUser, routerSanitize} = require('./route/users');
 const usersRouter = require('./routes/users');
 const recordsRouter = require('./routes/records');
+const OrdersRouter = require('./routes/orders');
 const cors = require("./middleware/cors");
 
 
@@ -47,8 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/records', recordsRouter);
-app.use('/validateUser', routerUser);
-app.use('/sanitizeUser', routerSanitize);
+app.use('/orders', OrdersRouter);
 
 
 /** EXPORT PATH */
