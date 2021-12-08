@@ -1,8 +1,8 @@
-<h3>Things that are going to be done</h3>
+##Things that are going to be done
 <hr>
 This file lists the changes that need to be made in each stage. It is ordered in reverse chronological order, meaning that the last changes made will always be on top of the file, so that readers will not have to scroll all the way down with each task added.
 
-<h3>Task 07 - Relations</h3>
+##Task 07 - Relations
 <hr>
 Relations relation relations. The fact is that MongoDB is a NoSQL database. It means that it is non-relational, among other things. To implement a kind of relations between documents, we use references by IDs or embed documents directly. In the task we will update our code in order to create relations between our models. We can see that an order contains the id of a record but when we retreat an order we only see the id and not the data of the record as well. We will introduce one to ne and one to many relationships between our models and populate data when needed.
 
@@ -15,7 +15,7 @@ TODO: 1.Create a new schema called address containing a street and a city.
 3.Using refs, connect the record schema with the order one (1-to-many).
 <hr>
 
-<h3>Task 01 - Mock database and Controllers.</h3>
+## Task 01 - Mock database and Controllers.
 
 Most applications made for the web have to do with some sort of data manipulation. In order to be able to manipulate our data we have to do two things first:
 

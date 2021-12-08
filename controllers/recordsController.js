@@ -141,22 +141,25 @@ exports.addOrderToRecord = async (req, res, next) => {
         }
 
         /* -------=^.^=-------Alternative without validation -------=^.^=------- */
-        // await RecordModel.findByIdAndUpdate(req.params.rid, {
-        //     $push: {orders: order._id},
+        // await OrderModel.findByIdAndUpdate(req.params.oid, {
+        //     $push: {record: record._id},
         // });
-        //
-        // res.status(200).send("Order added successfully =^.^=");
+        order.record = record._id;
+        const result = await order.save();
+        console.log(result)
+
+        res.status(200).send("Order added successfully =^.^=");
 
         /* -------=^.^=------- Another way to do the request -------=^.^=------- */
-        if (!record.orders.find((order) => {
-            return order._id === order._id;
-        })) {
-            record.orders.push(order._id);
-            record.save();
-            res.status(200).send("Order added successfully =^.^=");
-            return;
-        }
-        res.status(200).send("Order already associated with this record!");
+        // if (!record.orders.find((order) => {
+        //     return order._id === order._id;
+        // })) {
+        //     record.orders.push(order._id);
+        //     record.save();
+        //     res.status(200).send("Order added successfully =^.^=");
+        //     return;
+        // }
+        // res.status(200).send("Order already associated with this record!");
     } catch (err) {
         console.log(err)
         err.status = 500;

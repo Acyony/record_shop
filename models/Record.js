@@ -6,7 +6,7 @@ const RecordSchema = new mongoose.Schema({
     price: {type: Number, required: true},
     genre: {type: String},
     country: {type: String},
-    orders: [{type: Schema.Types.ObjectId, ref: "Order"}]
+    // orders: [{type: Schema.Types.ObjectId, ref: "Order"}]
 })
 
 module.exports = mongoose.model('Record', RecordSchema);
