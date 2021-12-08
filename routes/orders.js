@@ -11,6 +11,6 @@ const {
 
 router.route("/").get(getOrders).post(addOrder);
 
-router.route("/:id").get(getOrder).delete(deleteOrder).put(updateOrder);
+router.route("/:oid").get(getOrder).delete(deleteOrder).put(updateOrder);
 
 module.exports = router;

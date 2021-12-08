@@ -1,13 +1,10 @@
 const UserModel = require('../models/User');
+const AddressModel = require('../models/address')
 const {validationResult} = require("express-validator");
 const bcrypt = require("bcrypt");
 
 exports.getUsers = async (req, res, next) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array()});
-        }
         const users = await UserModel.find();
         if (!user) throw new createError.NotFound();
         res.status(200).send(users)
@@ -21,10 +18,6 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array()});
-        }
         const users = await UserModel.find();
         const {id} = req.params;
         if (!user) throw new createError.NotFound();
@@ -73,19 +66,27 @@ exports.updateUser = async (req, res, next) => {
 }
 
 exports.addUser = async (req, res, next) => {
-    const {firstName, lastName, email, password} = req.body;
+    const {firstName, street, city, lastName, email, password} = req.body;
     try {
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({errors: errors.array()});
         }
 
+        const address = await AddressModel.create({
+            street,
+            city
+        })
+
         const user = await UserModel.create({
             firstName,
             lastName,
             email,
-            password: await encryptPassword(password)
+            password: await encryptPassword(password),
+            address:  address._id
         });
+
         await user.save();
         res.status(200).send(user);
     } catch (err) {

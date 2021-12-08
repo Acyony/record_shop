@@ -9,6 +9,8 @@ const {getUsers, getUser, deleteUser, updateUser, addUser} = require('../control
 userRouter.route("/").get(getUsers).post([
     body('firstName').notEmpty().withMessage('first name is required!').trim(),
     body('lastName').notEmpty().withMessage('last name is required!').trim(),
+    body('street').notEmpty().withMessage('Street is required!'),
+    body('city').notEmpty().withMessage('City is required!'),
     body('email').notEmpty().withMessage('Email is required!').isEmail().normalizeEmail(),
     body('password')
         .notEmpty().withMessage('Password is required')

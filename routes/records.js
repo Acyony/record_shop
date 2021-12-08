@@ -6,15 +6,19 @@ const {
     upDateRecord,
     deleteRecord,
     addRecord,
+    addOrderToRecord
 } = require("../controllers/recordsController");
 
 recordsRouter.route("/").get(getRecords).post(addRecord);
 
 //http://localhost:3000/records/:id
-recordsRouter.route('/:id')
+recordsRouter.route('/:rid')
     .get(getRecordId)
     .put(upDateRecord)
     .delete(deleteRecord)
+
+recordsRouter.route('/:rid/:oid').post(addOrderToRecord)
+
 
 module.exports = recordsRouter;
 

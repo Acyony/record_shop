@@ -27,6 +27,7 @@ const usersRouter = require('./routes/users');
 const recordsRouter = require('./routes/records');
 const OrdersRouter = require('./routes/orders');
 const cors = require("./middleware/cors");
+const addressRouter = require("./routes/address");
 
 
 /** INIT */
@@ -51,6 +52,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/records', recordsRouter);
 app.use('/orders', OrdersRouter);
+app.use('/address', addressRouter);
 
 
 /** EXPORT PATH */

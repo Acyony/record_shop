@@ -14,6 +14,9 @@ const UserSchema = new Schema(
             type: String,
             required: true,
         },
+        address: {
+            type:  Schema.Types.ObjectId, ref:'Address'
+        },
         email: {
             type: String,
             required: true,

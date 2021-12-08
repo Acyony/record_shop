@@ -13,6 +13,7 @@ exports.getRecords = async (req, res, next) => {
         const records = await RecordModel.find();
         res.status(200).send(records);
     } catch (err) {
+        console.log(err)
         err.status = 500;
         next(err);
     }
@@ -66,6 +67,7 @@ exports.upDateRecord = async (req, res, next) => {
         // return order;
         res.status(200).send(record);
     } catch (err) {
+        console.log(err)
         err.status = 500;
         next(err);
     }
@@ -84,6 +86,7 @@ exports.deleteRecord = async (req, res, next) => {
         const record = await RecordModel.deleteOne({_id: id});
         res.status(200).send(record);
     } catch (err) {
+        console.log(err)
         err.status = 500;
         next(err);
     }
@@ -110,7 +113,53 @@ exports.addRecord = async (req, res, next) => {
         await record.save();
         res.status(200).send(record);
     } catch (err) {
+        console.log(err)
+        err.status = 500;
         next(err);
     }
 };
 
+exports.addOrderToRecord = async (req, res, next) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+
+        const record = await RecordModel.findById(req.params.rid);
+
+        if (!record) {
+            res.status(404).send("Record not found");
+            return;
+        }
+
+        const order = await OrderModel.findById(req.params.oid);
+
+        if (!order) {
+            res.status(404).send("Order not found");
+            return;
+        }
+
+        /* -------=^.^=-------Alternative without validation -------=^.^=------- */
+        // await RecordModel.findByIdAndUpdate(req.params.rid, {
+        //     $push: {orders: order._id},
+        // });
+        //
+        // res.status(200).send("Order added successfully =^.^=");
+
+        /* -------=^.^=------- Another way to do the request -------=^.^=------- */
+        if (!record.orders.find((order) => {
+            return order._id === order._id;
+        })) {
+            record.orders.push(order._id);
+            record.save();
+            res.status(200).send("Order added successfully =^.^=");
+            return;
+        }
+        res.status(200).send("Order already associated with this record!");
+    } catch (err) {
+        console.log(err)
+        err.status = 500;
+        next(err);
+    }
+}
