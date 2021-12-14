@@ -2,7 +2,7 @@ const express = require('express');
 const userRouter = express.Router();
 const {body, validationResult} = require('express-validator');
 
-const {getUsers, getUser, deleteUser, updateUser, addUser} = require('../controllers/userController');
+const {getUsers, getUser, deleteUser, updateUser, addUser, userSignup} = require('../controllers/userController');
 
 
 
@@ -24,6 +24,9 @@ userRouter.route("/").get(getUsers).post([
     })
     ],
     addUser);
+
+/*Signup: Return a token every time a user is created.*/
+userRouter.route("/signup").post(userSignup);
 
 userRouter.route('/:id').get(getUser).put(updateUser).delete(deleteUser);
 

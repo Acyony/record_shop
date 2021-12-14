@@ -2,6 +2,7 @@ const UserModel = require('../models/User');
 const AddressModel = require('../models/address')
 const {validationResult} = require("express-validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -84,7 +85,7 @@ exports.addUser = async (req, res, next) => {
             lastName,
             email,
             password: await encryptPassword(password),
-            address:  address._id
+            address: address._id
         });
 
         await user.save();
@@ -96,6 +97,49 @@ exports.addUser = async (req, res, next) => {
     }
 }
 
+
+exports.userSignup = async (req, res) => {
+    /*validationResult*/
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({errors: errors.array()});
+        return;
+    }
+
+    /*get user inputs - req.body*/
+    const {firstName, street, city, lastName, email, password} = req.body;
+
+    try {
+        /*check if the user already exists*/
+        let existing = await UserModel.findOne({email});
+
+        if (existing) {
+            res.status(400).json({msg: "User already exists"});
+            return;
+        }
+
+    } catch (err) {
+        res.status(500).send("Error in saving: " + err.message);
+        return;
+    }
+
+    /*create a new user, if it doesn't already exist'*/
+    const newUser = new UserModel({firstName, street, city, lastName, email, password});
+    newUser.save();
+
+    /* sending JWT and res token to the FE*/
+    const payload = {
+        newUser: {
+            id: newUser.id,
+            name: newUser.firstName
+        }
+    }
+
+    jwt.sign(payload, "bonekDeCroche", {expiresIn: "2h"}, (err, token) => {
+        if (err) throw err;
+        res.status(200).json({token: token});
+    })
+}
 
 
 const encryptPassword = (password) => {
