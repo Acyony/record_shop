@@ -1,8 +1,9 @@
 const express = require('express');
 const userRouter = express.Router();
 const {body, validationResult} = require('express-validator');
+const auth = require('../middleware/auth');
 
-const {getUsers, getUser, deleteUser, updateUser, addUser, userSignup} = require('../controllers/userController');
+const {getUsers, getUser, deleteUser, updateUser, addUser, userSignup, userLogin, loggedIn} = require('../controllers/userController');
 
 
 
@@ -27,6 +28,14 @@ userRouter.route("/").get(getUsers).post([
 
 /*Signup: Return a token every time a user is created.*/
 userRouter.route("/signup").post(userSignup);
+
+/*Login: Create new route /login and controller for user login*/
+userRouter.route('/login').post( [
+    body('email').notEmpty().withMessage('Email is required!').isEmail().normalizeEmail(),
+    body('password', "Please, enter a valid password").notEmpty().isLength({min: 4}),
+], userLogin);
+
+userRouter.route('/me').get( auth, loggedIn)
 
 userRouter.route('/:id').get(getUser).put(updateUser).delete(deleteUser);
 

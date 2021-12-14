@@ -3,6 +3,7 @@ const AddressModel = require('../models/address')
 const {validationResult} = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {token} = require("morgan");
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -97,7 +98,7 @@ exports.addUser = async (req, res, next) => {
     }
 }
 
-
+/*Signup: Return a token every time a user is created.*/
 exports.userSignup = async (req, res) => {
     /*validationResult*/
     const errors = validationResult(req);
@@ -156,6 +157,60 @@ exports.userSignup = async (req, res) => {
     })
 }
 
+
+/*Login: Create new route /login and controller for user login*/
+exports.userLogin = async (req, res) => {
+    /*validation result*/
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({errors: errors.array()});
+        return;
+    }
+
+    const {email, password} = req.body; /*frontend*/
+
+    try {
+        let user = await UserModel.findOne({email});
+        if (!user) {
+            res.status(400).json({msg: "User not found"})
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);/*backend hashed password*/
+
+        if (!isMatch) {
+            res.status(400).json({msg: "Incorrect password"})
+        }
+
+        /*If true create a token for the user*/
+        const payload = {
+            user: {
+                id: user.id
+            }
+        }
+
+        jwt.sign(payload, "bonekDeCroche", {expiresIn: "2h"}, (err, token) => {
+            if (err) throw err;
+            res.status(200).json({token})
+        })
+
+    } catch (err) {
+        res.status(500).send("Error in saving: " + err.message)
+    }
+}
+
+exports.loggedIn = async (req, res, next) => {
+    try {
+        const user = await UserModel.findById(req.user.id);
+
+        /*return the user password - not a safe mode*/
+        // res.json(user);
+
+        /*return only the firstName and email*/
+        res.status(200).send({message: user.firstName, email: user.email});
+    } catch (err) {
+        res.json({mas: "Error in logging in"})
+    }
+}
 
 const encryptPassword = (password) => {
     return new Promise((resolve, reject) => {
