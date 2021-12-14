@@ -107,7 +107,14 @@ exports.userSignup = async (req, res) => {
     }
 
     /*get user inputs - req.body*/
-    const {firstName, street, city, lastName, email, password} = req.body;
+    const {
+        firstName,
+        street,
+        city,
+        lastName,
+        email,
+        password
+    } = req.body;
 
     try {
         /*check if the user already exists*/
@@ -124,7 +131,15 @@ exports.userSignup = async (req, res) => {
     }
 
     /*create a new user, if it doesn't already exist'*/
-    const newUser = new UserModel({firstName, street, city, lastName, email, password});
+    const newUser = new UserModel({
+        firstName,
+        street,
+        city,
+        lastName,
+        email,
+        password: await encryptPassword(password),
+
+    });
     newUser.save();
 
     /* sending JWT and res token to the FE*/
